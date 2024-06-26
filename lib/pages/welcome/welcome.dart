@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../common/values/colors.dart';
+import '../../common/values/constant.dart';
+import '../../global.dart';
 import 'bloc/welcome_blocs.dart';
 import 'bloc/welcome_events.dart';
 import 'bloc/welcome_states.dart';
@@ -125,7 +127,7 @@ class _WelcomeState extends State<Welcome> {
             } else {
               //jump to a new page
               // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SignIn()));
-              //Global.storageService.setBool(AppConstants.STORAGE_DEVICE_OPEN_FIRST_TIME, true);
+              Global.storageService.setBool(AppConstants.STORAGE_DEVICE_OPEN_FIRST_TIME, true);
               print("欢迎页面2");
               Navigator.of(context)
                   .pushNamedAndRemoveUntil("/sign_in", (route) => false);

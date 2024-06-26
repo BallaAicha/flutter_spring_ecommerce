@@ -151,50 +151,6 @@ Widget _reusableMenuText(String menuText,
   );
 }
 
-// // Pour la vue de la grille de produits
-// Widget productGrid(ProductResponse product) {
-//
-//   return Container(
-//     padding: EdgeInsets.all(12.w),
-//     decoration: BoxDecoration(
-//         borderRadius: BorderRadius.circular(15.w),
-//         image: DecorationImage(
-//           fit: BoxFit.fill,
-//           image: NetworkImage("http://192.168.1.94:8222/api/v1/products/getImagesProd/${product.id}"),
-//         )),
-//     child: Column(
-//       mainAxisAlignment: MainAxisAlignment.end,
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         Text(
-//           product.name,
-//           maxLines: 1,
-//           overflow: TextOverflow.fade,
-//           textAlign: TextAlign.left,
-//           softWrap: false,
-//           style: TextStyle(
-//               color: AppColors.primaryElementText,
-//               fontWeight: FontWeight.bold,
-//               fontSize: 11.sp),
-//         ),
-//         SizedBox(
-//           height: 5.h,
-//         ),
-//         Text(
-//           product.description,
-//           maxLines: 1,
-//           overflow: TextOverflow.fade,
-//           textAlign: TextAlign.left,
-//           softWrap: false,
-//           style: TextStyle(
-//               color: AppColors.primaryFourthElementText,
-//               fontWeight: FontWeight.normal,
-//               fontSize: 8.sp),
-//         )
-//       ],
-//     ),
-//   );
-// }
 
 Widget productGrid(ProductResponse product) {
   return FutureBuilder<List<int>>(

@@ -1,5 +1,7 @@
 import 'package:e_commerce/pages/application/application_page.dart';
 import 'package:e_commerce/pages/application/bloc/app_blocs.dart';
+import 'package:e_commerce/pages/cart/bloc/carts_bloc.dart';
+import 'package:e_commerce/pages/cart/cart_controller.dart';
 import 'package:e_commerce/pages/favorite/bloc/FavoriteBloc.dart';
 import 'package:e_commerce/pages/favorite/favorite_controller.dart';
 import 'package:e_commerce/pages/favorite/favorite_page.dart';
@@ -23,6 +25,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
+import 'common/routes/pages.dart';
 import 'common/values/colors.dart';
 import 'global.dart';
 
@@ -52,28 +55,33 @@ class MyApp extends StatelessWidget {
     }
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => WelcomeBloc()),
-        BlocProvider(create: (context) => SignInBloc()),
-        BlocProvider(create: (context) => AppBlocs(customerId)), // pass customerId here
-        BlocProvider(create: (context) => HomePageBlocs()),
-        BlocProvider(create: (context) => SettingsBlocs()),
-        BlocProvider(create: (context) => ProductDetailBloc(),),
-        BlocProvider(create: (context) => SearchBlocs()),
-        BlocProvider(create: (context) => FavoriteBloc(FavoriteController())),
-        BlocProvider(create: (context) => OrderBloc(OrderControlller())),
+        // BlocProvider(create: (context) => WelcomeBloc()),
+        // BlocProvider(create: (context) => SignInBloc()),
+        // BlocProvider(create: (context) => AppBlocs(customerId)), // pass customerId here
+        // BlocProvider(create: (context) => HomePageBlocs()),
+        // BlocProvider(create: (context) => SettingsBlocs()),
+        // BlocProvider(create: (context) => ProductDetailBloc(),),
+        // BlocProvider(create: (context) => SearchBlocs()),
+        // BlocProvider(create: (context) => FavoriteBloc(FavoriteController())),
+        // BlocProvider(create: (context) => OrderBloc(OrderControlller())),
+        // BlocProvider(create: (context) => CartBloc(
+        //   CartController(),
+        // )),
+        ...AppPages.allBlocProviders(context)
+
       ],
       child: ScreenUtilInit(
         designSize: const Size(375, 812),
         builder: (context, child) => MaterialApp(
-          routes: {
-            '/sign_in': (context) => const SignIn(),
-            '/application': (context) =>  const ApplicationPage(),
-            '/settings': (context) => const SettingsPage(),
-            '/product_detail': (context) => const ProductDetail(),
-            '/orders': (context) => const OrdersList(),
-            '/favorites': (context) => const FavoritePage(),
-
-          },
+          // routes: {
+          //   '/sign_in': (context) => const SignIn(),
+          //   '/application': (context) =>  const ApplicationPage(),
+          //   '/settings': (context) => const SettingsPage(),
+          //   '/product_detail': (context) => const ProductDetail(),
+          //   '/orders': (context) => const OrdersList(),
+          //   '/favorites': (context) => const FavoritePage(),
+          //
+          // },
           builder: EasyLoading.init(),
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
@@ -83,7 +91,7 @@ class MyApp extends StatelessWidget {
                   ),
                   elevation: 0,
                   backgroundColor: Colors.white)),
-          home: Welcome(),
+          onGenerateRoute: AppPages.GenerateRouteSettings,
         ),
       ),
     );

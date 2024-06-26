@@ -23,6 +23,7 @@ dependencies:
   cached_network_image:
   jwt_decoder: ^2.0.1
   ionicons: ^0.2.2
+  collection:
 
 
 dev_dependencies:

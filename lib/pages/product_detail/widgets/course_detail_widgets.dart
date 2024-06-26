@@ -14,29 +14,7 @@ import '../../../global.dart';
 import '../../favorite/favorite_controller.dart';
 import '../bloc/product_detail_states.dart';
 
-// Widget thumbNail(int productId) {
-//   return FutureBuilder<List<int>>(
-//     future: UserAPI.getProductImage(productId),
-//     builder: (BuildContext context, AsyncSnapshot<List<int>> snapshot) {
-//       if (snapshot.connectionState == ConnectionState.waiting) {
-//         return CircularProgressIndicator();  // Show a loading spinner while waiting
-//       } else if (snapshot.hasError) {
-//         return Text('Error: ${snapshot.error}');  // Show error message if something went wrong
-//       } else {
-//         return Container(
-//           width: 325.w,
-//           height: 200.h,
-//           decoration: BoxDecoration(
-//             image: DecorationImage(
-//               fit: BoxFit.fitWidth,
-//               image: MemoryImage(Uint8List.fromList(snapshot.data!)),
-//             ),
-//           ),
-//         );
-//       }
-//     },
-//   );
-// }
+
 Widget thumbNail(int productId) {
   final favoriteController = FavoriteController();
   return FutureBuilder<List<int>>(

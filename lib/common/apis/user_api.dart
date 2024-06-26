@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:e_commerce/common/entities/CartRequest.dart';
+import 'package:e_commerce/common/entities/CartResponse.dart';
 import 'package:e_commerce/common/entities/OrderRequestEntity.dart';
 import 'package:e_commerce/common/entities/OrderResponseEntity.dart';
 
@@ -138,17 +140,6 @@ class UserAPI {
   }
 
 
-  // static Future<List<OrderResponseEntity>> getOrders(String customerId) async {
-  //   var response = await HttpUtil().get(
-  //       '${AppConstants.SERVER_API_URL_BACKEND}/orders/customer/$customerId');
-  //
-  //   if (response != null) {
-  //     List jsonResponse = response as List;
-  //     return jsonResponse.map((item) => OrderResponseEntity.fromJson(item)).toList();
-  //   } else {
-  //     throw Exception('Failed to load orders');
-  //   }
-  // }
 
   static Future<List<OrderResponseEntity>> getOrders(String customerId) async {
     var response = await HttpUtil().get(
@@ -170,7 +161,37 @@ class UserAPI {
     }
   }
 
- }
+
+
+  static Future<CartResponse> addCart(CartRequest request) async {
+    var response = await HttpUtil().post(
+      '${AppConstants.SERVER_API_URL_BACKEND}/products/carts',
+      mydata: request.toJson(),
+    );
+
+    if (response is Map<String, dynamic>) {
+      return CartResponse.fromJson(response);
+    } else if (response is String) {
+      throw Exception('Failed to add favoris: $response');
+    } else {
+      throw Exception('Unexpected response type: ${response.runtimeType}');
+    }
+  }
+
+
+  static Future<List<CartResponse>> getCarts(String customerId) async {
+    var response = await HttpUtil().get(
+        '${AppConstants.SERVER_API_URL_BACKEND}/products/carts/$customerId');
+    if (response != null) {
+      List jsonResponse = response as List;
+      return jsonResponse.map((item) => CartResponse.fromJson(item)).toList();
+    } else {
+      throw Exception('Failed to load favoris');
+    }
+  }
+
+
+}
 
 
 

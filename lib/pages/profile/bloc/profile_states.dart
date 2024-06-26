@@ -1,10 +1,10 @@
-//
-//
-// class ProfileStates{
-//   final UserItem? userProfile;
-//   const ProfileStates({this.userProfile});
-//
-//   ProfileStates copyWith({UserItem? userProfile}){
-//     return ProfileStates(userProfile: userProfile??this.userProfile);
-//   }
-// }
+
+
+class ProfileStates{
+
+  const ProfileStates();
+
+  ProfileStates copyWith(){
+    return ProfileStates();
+  }
+}
