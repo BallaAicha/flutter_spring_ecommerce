@@ -2,12 +2,15 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '../../../common/apis/user_api.dart';
 import '../../../common/entities/FavorisRequest.dart';
+import '../../../common/entities/Product.dart';
 import '../../../common/entities/ProductRequest.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/widgets/base_text_widget.dart';
+import '../../../global.dart';
 import '../../favorite/favorite_controller.dart';
 import '../bloc/product_detail_states.dart';
 
@@ -64,30 +67,42 @@ Widget thumbNail(int productId) {
                 icon: Icon(
                     size: 30.w, Icons.favorite_border, color: Colors.black),
                 onPressed: () async {
-                  var favorisRequest = FavorisRequest(
-                      id: productId,
-                      productList: [ProductRequest(id: productId)]);
-                  var response =
-                      await favoriteController.addFavoris(favorisRequest);
-                  if (response != null) {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text('Success'),
-                          content:
-                              Text('Your product has been added successfully.'),
-                          actions: <Widget>[
-                            TextButton(
-                              child: Text('OK'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        );
-                      },
-                    );
+                  print('Product IDDDDDD: $productId');
+                  if (productId != null) {
+                    String? accessToken = Global.storageService.getUserToken();
+                    Map<String, dynamic> tokenInfo = JwtDecoder.decode(accessToken!);
+                    String customerId = tokenInfo["sub"]; // Get the customerId from the token
+                    // Logs pour vérifier les valeurs
+                    print("Customer ID: $customerId");
+                    var favorisRequest = FavorisRequest(
+                        id: productId,
+                        productList: [Product(id: productId)],
+                        customerId: customerId);
+                    print('Product ID: $productId');
+                    var response =
+                    await favoriteController.addFavoris(favorisRequest);
+                    if (response.id != 0) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Success'),
+                            content:
+                            Text('Your product has been added successfully.'),
+                            actions: <Widget>[
+                              TextButton(
+                                child: Text('OK'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+                  } else {
+                    print('Product ID is null');
                   }
                 },
               ),

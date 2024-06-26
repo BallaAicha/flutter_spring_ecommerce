@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'package:e_commerce/common/entities/OrderRequestEntity.dart';
+import 'package:e_commerce/common/entities/OrderResponseEntity.dart';
+
 import '../entities/FavorisRequest.dart';
 import '../entities/FavorisResponse.dart';
 import '../entities/LoginRequestEntity.dart';
@@ -97,21 +100,21 @@ class UserAPI {
       mydata: request.toJson(),
     );
 
-    if (response is int) {
-      // Handle the case where the response is an integer
-      return FavorisResponse(id: response, productList: []);
-    } else if (response is Map<String, dynamic>) {
+    if (response is Map<String, dynamic>) {
       // Handle the case where the response is a JSON object
       return FavorisResponse.fromJson(response);
+    } else if (response is String) {
+      // Handle the case where the response is a string
+      throw Exception('Failed to add favoris: $response');
     } else {
       // Handle any other cases
-      return FavorisResponse(id: 0, productList: []);
+      throw Exception('Unexpected response type: ${response.runtimeType}');
     }
   }
 
-  static Future<List<FavorisResponse>> getFavoris() async {
+  static Future<List<FavorisResponse>> getFavoris(String customerId) async {
     var response = await HttpUtil().get(
-        '${AppConstants.SERVER_API_URL_BACKEND}/products/favoris');
+        '${AppConstants.SERVER_API_URL_BACKEND}/products/favoris/$customerId');
     if (response != null) {
       List jsonResponse = response as List;
       return jsonResponse.map((item) => FavorisResponse.fromJson(item)).toList();
@@ -121,6 +124,53 @@ class UserAPI {
   }
 
 
+  static Future<int> passerCommande(OrderRequestEntity order) async {
+    var response = await HttpUtil().post(
+        '${AppConstants.SERVER_API_URL_BACKEND}/orders',
+        mydata: order.toJson()
+    );
+
+    if (response != null) {
+      return response;
+    } else {
+      return 0;
+    }
+  }
+
+
+  // static Future<List<OrderResponseEntity>> getOrders(String customerId) async {
+  //   var response = await HttpUtil().get(
+  //       '${AppConstants.SERVER_API_URL_BACKEND}/orders/customer/$customerId');
+  //
+  //   if (response != null) {
+  //     List jsonResponse = response as List;
+  //     return jsonResponse.map((item) => OrderResponseEntity.fromJson(item)).toList();
+  //   } else {
+  //     throw Exception('Failed to load orders');
+  //   }
+  // }
+
+  static Future<List<OrderResponseEntity>> getOrders(String customerId) async {
+    var response = await HttpUtil().get(
+        '${AppConstants.SERVER_API_URL_BACKEND}/orders/customer/$customerId');
+
+    if (response != null) {
+      List jsonResponse = response as List;
+      return jsonResponse.map((item) {
+        // Ensure item is not null before calling fromJson
+        if (item != null) {
+          return OrderResponseEntity.fromJson(item);
+        } else {
+          // Handle the case where item is null
+          return null;
+        }
+      }).where((item) => item != null).toList().cast<OrderResponseEntity>();
+    } else {
+      throw Exception('Failed to load orders');
+    }
+  }
+
+ }
 
 
 
@@ -129,5 +179,6 @@ class UserAPI {
 
 
 
-}
+
+
 

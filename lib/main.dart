@@ -2,7 +2,11 @@ import 'package:e_commerce/pages/application/application_page.dart';
 import 'package:e_commerce/pages/application/bloc/app_blocs.dart';
 import 'package:e_commerce/pages/favorite/bloc/FavoriteBloc.dart';
 import 'package:e_commerce/pages/favorite/favorite_controller.dart';
+import 'package:e_commerce/pages/favorite/favorite_page.dart';
 import 'package:e_commerce/pages/home/bloc/home_page_blocs.dart';
+import 'package:e_commerce/pages/orders/bloc/OrderBloc.dart';
+import 'package:e_commerce/pages/orders/order_controller.dart';
+import 'package:e_commerce/pages/orders/orders_list.dart';
 import 'package:e_commerce/pages/product_detail/bloc/product_detail_blocs.dart';
 import 'package:e_commerce/pages/product_detail/course_detail.dart';
 import 'package:e_commerce/pages/profile/bloc/profile_blocs.dart';
@@ -17,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 import 'common/values/colors.dart';
 import 'global.dart';
@@ -33,18 +38,29 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    String? accessToken = Global.storageService.getUserToken();
+    String customerId = '';
+    if (accessToken != null && accessToken.isNotEmpty) {
+      try {
+        Map<String, dynamic> tokenInfo = JwtDecoder.decode(accessToken);
+        customerId = tokenInfo["sub"];
+      } catch (e) {
+        print('Invalid token: $e');
+      }
+    } else {
+      print('No access token found');
+    }
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => WelcomeBloc()),
         BlocProvider(create: (context) => SignInBloc()),
-        BlocProvider(create: (context) => AppBlocs()),
+        BlocProvider(create: (context) => AppBlocs(customerId)), // pass customerId here
         BlocProvider(create: (context) => HomePageBlocs()),
         BlocProvider(create: (context) => SettingsBlocs()),
-        //BlocProvider(create: (context) => ProfileBlocs())
         BlocProvider(create: (context) => ProductDetailBloc(),),
         BlocProvider(create: (context) => SearchBlocs()),
         BlocProvider(create: (context) => FavoriteBloc(FavoriteController())),
-
+        BlocProvider(create: (context) => OrderBloc(OrderControlller())),
       ],
       child: ScreenUtilInit(
         designSize: const Size(375, 812),
@@ -54,6 +70,9 @@ class MyApp extends StatelessWidget {
             '/application': (context) =>  const ApplicationPage(),
             '/settings': (context) => const SettingsPage(),
             '/product_detail': (context) => const ProductDetail(),
+            '/orders': (context) => const OrdersList(),
+            '/favorites': (context) => const FavoritePage(),
+
           },
           builder: EasyLoading.init(),
           debugShowCheckedModeBanner: false,

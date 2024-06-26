@@ -1,3 +1,4 @@
+import 'package:e_commerce/pages/cart/CartPage.dart';
 import 'package:e_commerce/pages/favorite/favorite_page.dart';
 import 'package:e_commerce/pages/home/home_page.dart';
 import 'package:e_commerce/pages/search/search.dart';
@@ -5,14 +6,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../common/values/colors.dart';
+import '../../orders/orders_list.dart';
 import '../../profile/profile.dart';
 
-Widget buildPage(int index) {
+Widget buildPage(int index,String customerId) {
   List<Widget> _widget = [
     const HomePage(),
     const Search(),
-    const FavoritePage(),
-    const Text("Chat"),
+     const FavoritePage(),
+    //const OrdersList(),
+    const CartPage(),
     const ProfilePage(),
   ];
 
@@ -41,13 +44,13 @@ var bottomTabs = [
     icon: SizedBox(
       width: 15.w,
       height: 15.h,
-      child: Image.asset("assets/icons/search2.png"),
+      child: Image.asset("assets/icons/search.png"),
     ),
     activeIcon: SizedBox(
       width: 15.w,
       height: 15.h,
       child: Image.asset(
-        "assets/icons/search2.png",
+        "assets/icons/search.png",
         color: AppColors.primaryElement,
       ),
     ),
@@ -57,28 +60,28 @@ var bottomTabs = [
       icon: SizedBox(
         width: 15.w,
         height: 15.h,
-        child: Image.asset("assets/icons/heart.png"),
+        child: Image.asset("assets/icons/favorite.png"),
       ),
       activeIcon: SizedBox(
         width: 15.w,
         height: 15.h,
         child: Image.asset(
-          "assets/icons/heart.png",
+          "assets/icons/favorite.png",
           color: AppColors.primaryElement,
         ),
       )),
   BottomNavigationBarItem(
-      label: "Notification",
+      label: "Cart",
       icon: SizedBox(
         width: 15.w,
         height: 15.h,
-        child: Image.asset("assets/icons/message-circle.png"),
+        child: Image.asset("assets/icons/cart.png"),
       ),
       activeIcon: SizedBox(
         width: 15.w,
         height: 15.h,
         child: Image.asset(
-          "assets/icons/message-circle.png",
+          "assets/icons/cart.png",
           color: AppColors.primaryElement,
         ),
       )),
@@ -87,13 +90,13 @@ var bottomTabs = [
       icon: SizedBox(
         width: 15.w,
         height: 15.h,
-        child: Image.asset("assets/icons/person2.png"),
+        child: Image.asset("assets/icons/profile.png"),
       ),
       activeIcon: SizedBox(
         width: 15.w,
         height: 15.h,
         child: Image.asset(
-          "assets/icons/person2.png",
+          "assets/icons/profile.png",
           color: AppColors.primaryElement,
         ),
       )),

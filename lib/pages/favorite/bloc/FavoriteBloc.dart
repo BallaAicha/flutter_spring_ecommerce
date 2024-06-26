@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/entities/FavorisRequest.dart';
+import '../../../common/entities/Product.dart';
 import '../../../common/entities/ProductRequest.dart';
 import '../favorite_controller.dart';
 import 'FavoriteEvent.dart';
@@ -20,7 +21,8 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
     try {
       var favorisRequest = FavorisRequest(
           id: event.productId,
-          productList: [ProductRequest(id: event.productId)]);
+          productList: [Product(id: event.productId)],
+          customerId: event.customerId); // Add customerId to the request
       var response = await favoriteController.addFavoris(favorisRequest);
       emit(FavoriteLoaded([response]));
     } catch (e) {
@@ -32,7 +34,7 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
       LoadFavoritesEvent event, Emitter<FavoriteState> emit) async {
     emit(FavoriteLoading());
     try {
-      var response = await favoriteController.getFavoris();
+      var response = await favoriteController.getFavoris(event.customerId); // pass customerId here
       emit(FavoriteLoaded(response));
     } catch (e) {
       emit(FavoriteError(e.toString()));

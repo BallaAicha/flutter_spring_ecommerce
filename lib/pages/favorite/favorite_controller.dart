@@ -7,7 +7,7 @@ class FavoriteController {
     return await UserAPI.addFavoris(request);
   }
 
-  Future<List<FavorisResponse>> getFavoris() async {
-    return await UserAPI.getFavoris();
+  Future<List<FavorisResponse>> getFavoris(String customerId) async {
+    return await UserAPI.getFavoris(customerId);
   }
 }

@@ -1,9 +1,13 @@
 import 'package:e_commerce/pages/product_detail/product_detail_controller.dart';
 import 'package:e_commerce/pages/product_detail/widgets/course_detail_widgets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import '../../common/widgets/base_text_widget.dart';
+import '../../global.dart';
+import '../orders/widgets/order_widget.dart';
 import 'bloc/product_detail_blocs.dart';
 import 'bloc/product_detail_states.dart';
 
@@ -106,7 +110,25 @@ class _ProductDetailState extends State<ProductDetail> {
                                 //course buy button
                                 GestureDetector(
                                   onTap: () {
-                                    //_courseDetailController.goBuy(state.courseItem!.id);
+                                    String? accessToken = Global.storageService.getUserToken();
+                                    Map<String, dynamic> tokenInfo = JwtDecoder.decode(accessToken!);
+                                    String customerId = tokenInfo["sub"]; // Get the customerId from the token
+                                    // Logs pour vérifier les valeurs
+                                    print("Customer ID: $customerId");
+                                    print("Product ID: ${state.productResponse!.id}");
+                                    print("Product Price: ${state.productResponse!.price}");
+
+                                    showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true, // to display the bottom sheet in full screen
+                                      builder: (context) {
+                                        return OrderBottomSheet(
+                                          productId: state.productResponse!.id,
+                                          customerId: customerId,
+                                          productPrice: state.productResponse!.price,
+                                        );
+                                      },
+                                    );
                                   },
                                   child: appPrimaryButton("Go buy"),
                                 ),

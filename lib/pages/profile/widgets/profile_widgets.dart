@@ -49,7 +49,6 @@ Widget profileIconAndEditButton() {
 var imagesInfo = <String, String>{
   "Settings": "settings.png",
   "Payment details": "credit-card.png",
-  "Achievement": "award.png",
   "Love": "heart(1).png",
   "Reminders": "cube.png"
 };
@@ -64,8 +63,11 @@ Widget buildListView(BuildContext context) {
             if (index == 0) {
               Navigator.of(context).pushNamed("/settings");
             } else if (index == 1) {
-              // Navigator.of(context).pushNamed(AppRoutes.PAYMENT_DETAILS);
+               Navigator.of(context).pushNamed("/orders");
             }
+
+
+
           },
           child: Container(
             margin: EdgeInsets.only(bottom: 15.h),

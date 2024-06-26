@@ -1,5 +1,5 @@
-class ProductRequest {
-  int? productId;
+class Product {
+  int? id;
   String? name;
   String? description;
   double? availableQuantity;
@@ -9,8 +9,8 @@ class ProductRequest {
   ///quantity double
   double? quantity;
 
-  ProductRequest({
-    this.productId,
+  Product({
+    this.id,
     this.name,
     this.description,
     this.availableQuantity,
@@ -20,8 +20,8 @@ class ProductRequest {
     this.quantity,
   });
 
-  factory ProductRequest.fromJson(Map<String, dynamic> json) => ProductRequest(
-    productId: json["id"],
+  factory Product.fromJson(Map<String, dynamic> json) => Product(
+    id: json["id"],
     name: json["name"],
     description: json["description"],
     availableQuantity: json["availableQuantity"],
@@ -33,7 +33,7 @@ class ProductRequest {
   );
 
   Map<String, dynamic> toJson() => {
-    "productId": productId,
+    "id": id,
     "name": name,
     "description": description,
     "availableQuantity": availableQuantity,

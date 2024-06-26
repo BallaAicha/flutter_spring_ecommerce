@@ -28,7 +28,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
         color: Colors.white,
         child: SafeArea(
           child: Scaffold(
-            body: buildPage(state.index),
+            body: buildPage(state.index, state.customerId),
             bottomNavigationBar: Container(
               width: 375.w,
               height: 58.h,
